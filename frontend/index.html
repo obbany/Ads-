@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>ClickN Earn Official</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="previewBanner" class="preview-banner hidden"></div>
+
+    <!-- ============ DASHBOARD ============ -->
+    <section id="screen-dashboard" class="screen active">
+      <div class="page-header">
+        <div class="header-placeholder"></div>
+        <div>
+          <div class="site-title" id="siteName">ClickN Earn Official</div>
+          <div class="header-sub">Earn. Refer. Withdraw.</div>
+        </div>
+        <button class="icon-btn" onclick="openNotifications()" aria-label="Notifications">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+          </svg>
+          <span id="notifBadge" class="badge hidden">0</span>
+        </button>
+      </div>
+
+      <div class="balance-card">
+        <div class="balance-top">
+          <span class="balance-label">Total Balance</span>
+          <button class="eye-btn" onclick="toggleBalance()" id="eyeBtn" aria-label="Toggle balance">
+            <svg id="eyeOn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+            <svg id="eyeOff" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"></path>
+              <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"></path>
+              <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"></path>
+              <line x1="1" y1="1" x2="23" y2="23"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="balance-amount mono"><span class="cur">$</span><span id="dashBalance">0.00</span></div>
+        <div class="balance-foot"><span class="dot"></span> <span>Available for withdrawal</span></div>
+      </div>
+
+      <div class="sec-title">Overview</div>
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-ico ico-violet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <div class="stat-val green mono">$0.00</div>
+          <div class="stat-lbl">Total Earning</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico ico-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+          </div>
+          <div class="stat-val mono" id="taskDone">0</div>
+          <div class="stat-lbl">Task Done</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico ico-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+          <div class="stat-val mono" id="totalRefer">0</div>
+          <div class="stat-lbl">Total Refer</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-ico ico-gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="6" x2="12" y2="12"></line><line x1="12" y1="12" x2="15" y2="15"></line></svg>
+          </div>
+          <div class="stat-val mono" id="availBal">$0.00</div>
+          <div class="stat-lbl">Available</div>
+        </div>
+      </div>
+
+      <div class="invite-card">
+        <div class="gift-box">&#127873;</div>
+        <div style="flex:1">
+          <div class="invite-title">Invite Friends &amp; Earn Together!</div>
+          <div class="invite-sub" id="inviteReward">Earn 0.20 USDT for each active referral.</div>
+        </div>
+      </div>
+      <button class="invite-btn" onclick="shareInvite()">
+        <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg>
+        Invite Now
+      </button>
+    </section>
+
+    <!-- ============ TASKS ============ -->
+    <section id="screen-tasks" class="screen">
+      <div class="page-header">
+        <div class="header-placeholder"></div>
+        <div>
+          <div class="site-title">Tasks</div>
+          <div class="header-sub">Complete &amp; get rewarded</div>
+        </div>
+        <div class="header-placeholder"></div>
+      </div>
+      <div id="taskList" class="card-list"></div>
+    </section>
+
+    <!-- ============ WITHDRAW ============ -->
+    <section id="screen-withdraw" class="screen">
+      <div class="page-header">
+        <div class="header-placeholder"></div>
+        <div>
+          <div class="site-title">Withdraw</div>
+          <div class="header-sub">Cash out your earnings</div>
+        </div>
+        <div class="header-placeholder"></div>
+      </div>
+
+      <div class="balance-sm">
+        <div>
+          <div class="b-label">Total Balance</div>
+          <div class="b-val mono" id="wdBalance">$0.00</div>
+        </div>
+        <div style="font-size:12px;color:var(--muted);text-align:right">
+          Min <span id="wdMin" class="mono">$1</span><br/>Max <span id="wdMax" class="mono">$10</span>
+        </div>
+      </div>
+
+      <div class="sec-title">Binance UID</div>
+      <div class="input-wrap">
+        <input id="wdUid" type="text" inputmode="numeric" placeholder="Enter your Binance UID" maxlength="20" />
+        <button class="paste-btn" onclick="pasteUid()">Paste</button>
+      </div>
+
+      <div class="sec-title">Amount <span class="more">tap to select</span></div>
+      <div class="chip-row" id="amountChips"></div>
+      <div class="input-wrap">
+        <span style="color:var(--muted);font-weight:700;margin-right:8px">$</span>
+        <input id="wdAmount" type="number" step="0.01" min="1" placeholder="Enter withdrawal amount" />
+      </div>
+
+      <button class="btn btn-primary" onclick="submitWithdraw()">Withdraw Now</button>
+
+      <div class="sec-title">Withdrawal History</div>
+      <div id="wdHistory" class="card-list"></div>
+    </section>
+
+    <!-- ============ PROFILE ============ -->
+    <section id="screen-profile" class="screen">
+      <div class="page-header">
+        <div class="header-placeholder"></div>
+        <div>
+          <div class="site-title">Profile</div>
+          <div class="header-sub">Your account</div>
+        </div>
+        <div class="header-placeholder"></div>
+      </div>
+
+      <div class="id-card">
+        <div class="avatar" id="profileAvatar"></div>
+        <div class="id-name" id="profileName">—</div>
+        <div class="id-user" id="profileUser">@—</div>
+        <div class="id-tg" id="profileTgId">ID: —</div>
+      </div>
+
+      <div class="profile-menu">
+        <button class="profile-item" onclick="openWalletSheet()">
+          <span class="p-ico gold">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"></path><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"></path><path d="M18 12a2 2 0 0 0 0 4h4v-4z"></path></svg>
+          </span>
+          Wallet Address
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <button class="profile-item" onclick="openPaymentsSheet()">
+          <span class="p-ico green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          </span>
+          Payment History
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <button class="profile-item" onclick="openComingSoon('Security')">
+          <span class="p-ico blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </span>
+          Security
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <button class="profile-item" onclick="openAbout()">
+          <span class="p-ico violet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+          </span>
+          About
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+        <button class="profile-item danger" onclick="signOut()">
+          <span class="p-ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          </span>
+          Sign Out
+          <svg class="chev" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============ BOTTOM NAV ============ -->
+    <nav class="bottom-nav" id="bottomNav">
+      <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-item" data-tab="tasks" onclick="switchTab('tasks')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span>Task</span>
+      </button>
+      <button class="nav-item" data-tab="withdraw" onclick="switchTab('withdraw')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <span>Withdraw</span>
+      </button>
+      <button class="nav-item" data-tab="profile" onclick="switchTab('profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- ============ NOTIFICATIONS SHEET ============ -->
+  <div class="sheet-overlay" id="notifSheet" onclick="if(event.target===this)closeSheet('notifSheet')">
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <button class="sheet-close" onclick="closeSheet('notifSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="sheet-title">Notifications</div>
+      <div class="sheet-sub">Messages from the admin appear here.</div>
+      <div id="notifList"></div>
+    </div>
+  </div>
+
+  <!-- ============ WALLET SHEET ============ -->
+  <div class="sheet-overlay" id="walletSheet" onclick="if(event.target===this)closeSheet('walletSheet')">
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <button class="sheet-close" onclick="closeSheet('walletSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="sheet-title">Wallet Address</div>
+      <div class="sheet-sub">
+        Add your <b>Binance UID</b> to receive withdrawals. Withdrawals are sent to this UID only.
+        Make sure the UID is correct - it cannot be changed for each withdrawal once submitted.
+      </div>
+      <div class="input-wrap">
+        <input id="walletInput" type="text" inputmode="numeric" placeholder="Paste or type your Binance UID" maxlength="20" />
+        <button class="paste-btn" onclick="pasteWallet()">Paste</button>
+      </div>
+      <button class="btn btn-primary" onclick="saveWallet()">Save &amp; Wallet Address</button>
+    </div>
+  </div>
+
+  <!-- ============ PAYMENTS SHEET ============ -->
+  <div class="sheet-overlay" id="paymentsSheet" onclick="if(event.target===this)closeSheet('paymentsSheet')">
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <button class="sheet-close" onclick="closeSheet('paymentsSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div class="sheet-title">Payment History</div>
+      <div class="seg-tabs">
+        <button class="seg-tab active" data-f="all" onclick="payFilter('all')">All</button>
+        <button class="seg-tab" data-f="earnings" onclick="payFilter('earnings')">Earnings</button>
+        <button class="seg-tab" data-f="withdraw" onclick="payFilter('withdraw')">Withdraw</button>
+        <button class="seg-tab" data-f="task" onclick="payFilter('task')">Task</button>
+      </div>
+      <div id="payList"></div>
+    </div>
+  </div>
+
+  <!-- ============ INFO SHEET (coming soon / about) ============ -->
+  <div class="sheet-overlay" id="infoSheet" onclick="if(event.target===this)closeSheet('infoSheet')">
+    <div class="sheet">
+      <div class="sheet-grab"></div>
+      <button class="sheet-close" onclick="closeSheet('infoSheet')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+      <div id="infoSheetTitle" class="sheet-title"></div>
+      <div id="infoSheetBody" class="sheet-sub" style="line-height:1.7;font-size:13.5px;color:var(--text)"></div>
+    </div>
+  </div>
+
+  <!-- ============ AD MODAL ============ -->
+  <div class="ad-modal" id="adModal">
+    <div class="ad-box">
+      <div class="site-title" style="font-size:17px" id="adTaskTitle">Watch Ad</div>
+      <div class="ad-count mono" id="adCount">15</div>
+      <div class="ad-hint">Watch the advertisement to earn your reward</div>
+      <div class="ad-progress"><span id="adProgress" style="width:0%"></span></div>
+      <button class="btn btn-primary hidden" id="adClaimBtn" onclick="claimAd()">Claim +0.00 USDT</button>
+      <button class="btn btn-ghost" id="adCloseBtn" onclick="closeAd()">Cancel</button>
+      <div class="ad-hint" id="adLinkHint" style="margin-top:10px">If the ad does not open automatically, tap the button above.</div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="/static/js/app.js"></script>
+</body>
+              </html>
