@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClickN Earn Admin</title>
+  <link rel="stylesheet" href="/static/css/admin.css" />
+</head>
+<body>
+  <!-- LOGIN -->
+  <div id="loginView" class="login-view">
+    <div class="login-card">
+      <div class="login-logo">CN</div>
+      <h1>ClickN Earn Admin</h1>
+      <p>Enter your admin password to continue</p>
+      <input id="adminPass" type="password" placeholder="Admin password" onkeydown="if(event.key==='Enter')doLogin()" />
+      <button class="btn-primary" onclick="doLogin()">Login</button>
+      <div id="loginErr" class="login-err"></div>
+    </div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panelView" class="hidden">
+    <aside class="sidebar">
+      <div class="brand">CN <span>Admin</span></div>
+      <nav>
+        <button class="nav-btn active" data-sec="stats" onclick="switchSec('stats')">📊 Overview</button>
+        <button class="nav-btn" data-sec="users" onclick="switchSec('users')">👥 Users</button>
+        <button class="nav-btn" data-sec="withdrawals" onclick="switchSec('withdrawals')">🏦 Withdrawals</button>
+        <button class="nav-btn" data-sec="tasks" onclick="switchSec('tasks')">✅ Tasks</button>
+        <button class="nav-btn" data-sec="notify" onclick="switchSec('notify')">📣 Send Message</button>
+        <button class="nav-btn" data-sec="settings" onclick="switchSec('settings')">⚙️ Settings</button>
+      </nav>
+      <button class="nav-btn logout" onclick="logout()">🚪 Logout</button>
+    </aside>
+
+    <main class="content">
+      <!-- OVERVIEW -->
+      <section id="sec-stats" class="admin-sec active">
+        <h2>Overview</h2>
+        <div class="stat-cards" id="statCards"></div>
+        <div class="panel-card">
+          <div class="panel-card-title">Recent Withdrawals</div>
+          <div id="recentWd"></div>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section id="sec-users" class="admin-sec">
+        <div class="sec-head">
+          <h2>Users</h2>
+          <input id="userSearch" class="search-input" placeholder="Search by name / username / ID" onkeydown="if(event.key==='Enter')loadUsers()" />
+          <button class="btn-secondary" onclick="loadUsers()">Search</button>
+        </div>
+        <div class="panel-card" id="usersList"></div>
+      </section>
+
+      <!-- WITHDRAWALS -->
+      <section id="sec-withdrawals" class="admin-sec">
+        <div class="sec-head">
+          <h2>Withdrawals</h2>
+          <div class="seg">
+            <button class="seg-btn active" data-wf="pending" onclick="loadWithdrawals('pending')">Pending</button>
+            <button class="seg-btn" data-wf="confirmed" onclick="loadWithdrawals('confirmed')">Confirmed</button>
+            <button class="seg-btn" data-wf="rejected" onclick="loadWithdrawals('rejected')">Rejected</button>
+            <button class="seg-btn" data-wf="" onclick="loadWithdrawals('')">All</button>
+          </div>
+        </div>
+        <div class="panel-card" id="wdList"></div>
+      </section>
+
+      <!-- TASKS -->
+      <section id="sec-tasks" class="admin-sec">
+        <div class="sec-head">
+          <h2>Tasks</h2>
+          <button class="btn-primary small" onclick="openTaskModal()">+ New Task</button>
+        </div>
+        <div class="panel-card" id="taskList"></div>
+      </section>
+
+      <!-- NOTIFY -->
+      <section id="sec-notify" class="admin-sec">
+        <h2>Send Message</h2>
+        <div class="panel-card">
+          <div class="panel-card-title">Compose Message</div>
+          <label class="f-label">Recipients</label>
+          <select id="notifyTarget" class="f-select" onchange="toggleUserPick()">
+            <option value="all">All users</option>
+            <option value="user">Specific user</option>
+          </select>
+          <div id="userPickWrap" class="hidden" style="margin-top:10px">
+            <label class="f-label">Select user</label>
+            <select id="notifyUserId" class="f-select"></select>
+          </div>
+          <label class="f-label">Title</label>
+          <input id="notifyTitle" class="f-input" placeholder="Notification title" value="New Notification" />
+          <label class="f-label">Message</label>
+          <textarea id="notifyMsg" class="f-input" rows="4" placeholder="Type your message..."></textarea>
+          <div class="chk-row">
+            <input type="checkbox" id="notifyBot" checked />
+            <label for="notifyBot">Also send via Telegram bot (direct chat message)</label>
+          </div>
+          <button class="btn-primary" onclick="sendNotify()">Send Message</button>
+        </div>
+        <div class="panel-card">
+          <div class="panel-card-title">Message History</div>
+          <div id="msgHistory"></div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="sec-settings" class="admin-sec">
+        <h2>Settings</h2>
+        <div class="panel-card">
+          <label class="f-label">Site Name</label>
+          <input id="setSiteName" class="f-input" />
+          <label class="f-label">Minimum Withdraw (USDT)</label>
+          <input id="setMinWd" class="f-input" type="number" step="0.1" min="0" />
+          <label class="f-label">Maximum Withdraw (USDT)</label>
+          <input id="setMaxWd" class="f-input" type="number" step="0.1" min="0" />
+          <label class="f-label">Referral Reward (USDT)</label>
+          <input id="setRefReward" class="f-input" type="number" step="0.01" min="0" />
+          <label class="f-label">15s Ad Code (Monetag HTML snippet)</label>
+          <textarea id="setAdCode" class="f-input" rows="5" placeholder="Paste your Monetag / ad network HTML code here..."></textarea>
+          <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- TASK MODAL -->
+  <div id="taskModal" class="modal hidden">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3 id="taskModalTitle">New Task</h3>
+        <button class="modal-x" onclick="closeTaskModal()">✕</button>
+      </div>
+      <label class="f-label">Title</label>
+      <input id="tkTitle" class="f-input" placeholder="e.g. Join our Telegram Channel" />
+      <label class="f-label">Type</label>
+      <select id="tkType" class="f-select">
+        <option value="telegram_channel">Telegram Channel</option>
+        <option value="telegram_group">Telegram Group</option>
+        <option value="youtube">YouTube Subscribe</option>
+        <option value="website">Website Visit</option>
+        <option value="ad">Video Ad (15s)</option>
+      </select>
+      <label class="f-label">Link / URL</label>
+      <input id="tkLink" class="f-input" placeholder="https://t.me/yourchannel  or  https://youtube.com/..." />
+      <label class="f-label">Reward (USDT)</label>
+      <input id="tkReward" class="f-input" type="number" step="0.01" min="0" />
+      <label class="f-label">Sort order (optional)</label>
+      <input id="tkSort" class="f-input" type="number" value="0" />
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeTaskModal()">Cancel</button>
+        <button class="btn-primary" id="taskSaveBtn" onclick="saveTask()">Create Task</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- USER MODAL -->
+  <div id="userModal" class="modal hidden">
+    <div class="modal-card wide">
+      <div class="modal-head">
+        <h3 id="umName">User</h3>
+        <button class="modal-x" onclick="closeUserModal()">✕</button>
+      </div>
+      <div id="umBody"></div>
+    </div>
+  </div>
+
+  <div id="toast"></div>
+  <script src="/static/js/admin.js"></script>
+</body>
+  </html>
